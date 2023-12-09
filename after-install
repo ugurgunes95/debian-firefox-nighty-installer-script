@@ -1,0 +1,26 @@
+sudo nano /etc/apt/sources.list
+
+sudo apt install bash-completion rofi git curl nala neofetch flatpak gnome-software-plugin-flatpak -y
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+echo "Starting!"
+sudo nala update
+sudo nala install gnome-shell gnome-terminal gnome-tweaks gnome-themes-extra nautilus gnome-disk-utility -y
+echo "Base installed!"
+
+sudo nala install nvidia-driver -y
+echo "Nvidia installed!"
+
+
+sudo flatpak override --filesystem=$HOME/.themes
+sudo flatpak override --filesystem=$HOME/.icons
+
+# mkdir .config/environment.d
+# cat .config/environment.d/envvars.conf > GTK_THEME=WhiteSur-Dark-solid
+
+cd ~/Downloads
+git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git
+./WhiteSur-gtk-theme/install.sh
+./WhiteSur-gtk-theme/install.sh -N mojave
+git clone https://github.com/vinceliuice/WhiteSur-icon-theme.git
+./WhiteSur-icon-theme/install.sh -b -a

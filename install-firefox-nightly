@@ -1,0 +1,40 @@
+echo "Removing old one..."
+rm ~/.local/share/applications/firefox-nightly.desktop
+sudo unlink /usr/local/bin/firefox-nightly
+sudo rm /opt/firefox/ -rf
+
+echo "*********************************************************************************"
+echo "Navigating downloads folder..."
+cd ~/Downloads
+
+echo "File is downloading..."
+wget -O firefox.tar.bz2 'https://download.mozilla.org/?product=firefox-nightly-latest-ssl&os=linux64&lang=en-US'
+echo "File downloaded"
+
+echo "Extracting..."
+tar -xvf firefox.tar.bz2
+echo "Extracted."
+
+rm firefox.tar.bz2
+
+echo "Moving to the right directory..."
+sudo mv firefox /opt
+
+echo "Creating symbolink link..."
+sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox-nightly
+
+echo "Creating .desktop file..."
+echo \
+'[Desktop Entry]
+Name=Firefox Nightly
+Comment=Web Browser
+Exec=/opt/firefox/firefox %u
+Terminal=false
+Type=Application
+Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+Categories=Network;WebBrowser;' \
+> ~/.local/share/applications/firefox-nightly.desktop
+
+echo "Adding permissions for auto update..."
+sudo chown -R $USER:$USER /opt/firefox
+sudo chown -R $USER:$USER /opt/firefox/*
